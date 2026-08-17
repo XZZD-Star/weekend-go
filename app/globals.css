@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand: single Action Blue, Apple-style restraint */
+  --color-primary: #0066cc;
+  --color-primary-hover: #0071e3;
+  --color-primary-on-dark: #2997ff;
+
+  /* Ink ladder: 300 / 400 / 600 (no 500 by design) */
+  --color-ink: #1d1d1f;
+  --color-body: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-muted-2: #86868b;
+
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-parchment: #f5f5f7;
+  --color-surface-2: #fafafc;
+  --color-tile-dark: #1d1d1f;
+  --color-divider: #e8e8ed;
+
+  /* Accents */
+  --color-star: #ff9f0a;
+  --color-tag-bg: #e3eefb;
+  --color-tool-bg: #f0f6fd;
+
+  /* Shape */
+  --radius-pill: 9999px;
+  --radius-card: 18px;
+  --radius-card-lg: 24px;
+
+  /* Easing — Emil's "strong ease-out" + drawer curve */
+  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Type scale (Chinese-tuned: 17px body, 36px section, 44px hero) */
+  --font-display: "Noto Sans SC", "Inter", system-ui, -apple-system, sans-serif;
+  --font-body: "Noto Sans SC", "Inter", system-ui, -apple-system, sans-serif;
+  --font-num: "Inter", "Noto Sans SC", system-ui, sans-serif;
+}
+
+html, body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.47;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* === Apple tight headline cadence on display sizes === */
+.tracking-tight-cn {
+  letter-spacing: -0.01em;
+}
+
+/* === Stagger entrance: each child delays by 60ms per index === */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger > * {
+  opacity: 0;
+  animation: rise-in 600ms var(--ease-out-soft) forwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 60ms; }
+.stagger > *:nth-child(3) { animation-delay: 120ms; }
+.stagger > *:nth-child(4) { animation-delay: 180ms; }
+.stagger > *:nth-child(5) { animation-delay: 240ms; }
+.stagger > *:nth-child(6) { animation-delay: 300ms; }
+.stagger > *:nth-child(7) { animation-delay: 360ms; }
+.stagger > *:nth-child(8) { animation-delay: 420ms; }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in {
+  opacity: 0;
+  animation: fade-in 700ms var(--ease-out-soft) 100ms forwards;
+}
+
+/* === Buttons: Emil's press feedback === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  transition: transform 160ms var(--ease-out-snap), background-color 200ms var(--ease-out-snap);
+  will-change: transform;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+  padding: 12px 22px;
+  font-size: 15px;
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--color-primary);
+  padding: 12px 22px;
+  font-size: 15px;
+  box-shadow: inset 0 0 0 1.5px var(--color-primary);
+}
+
+.btn-store {
+  padding: 15px 30px;
+  font-size: 17px;
+}
+
+/* === Card hover: subtle lift (no jitter, transform-only) === */
+.lift {
+  transition: transform 240ms var(--ease-out-snap), box-shadow 240ms var(--ease-out-snap);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* === Soft pulse for the "Live" star indicator === */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+.pulse-dot {
+  animation: pulse-soft 1.8s ease-in-out infinite;
+}
+
+/* === Marquee for trust row (decorative; pure transform) === */
+@keyframes marquee-fade {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+/* === Reduced motion: drop movement, keep opacity === */
+@media (prefers-reduced-motion: reduce) {
+  .stagger > *, .fade-in {
+    animation: fade-in 200ms ease forwards !important;
+  }
+  .lift { transition: none; }
+  .btn { transition: background-color 200ms ease; }
+  .btn:active { transform: none; }
+}
