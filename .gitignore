@@ -30,3 +30,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .next-build-old-*/
+
+# next.js cache (renamed by sandbox workaround)
+.next-*/
